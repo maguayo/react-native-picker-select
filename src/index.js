@@ -14,6 +14,17 @@ import {
 import PropTypes from 'prop-types';
 import isEqual from 'lodash.isequal';
 import { defaultStyles } from './styles';
+import { TouchableOpacity as RNGHTouchableOpacity} from 'react-native-gesture-handler';
+
+const CustomBottomSheetButton = ({ children, ...otherProps }) => {
+  if (Platform.OS === "android") {
+    return (
+      <RNGHTouchableOpacity {...otherProps}>{children}</RNGHTouchableOpacity>
+    );
+  }
+
+  return <TouchableOpacity {...otherProps}>{children}</TouchableOpacity>;
+};
 
 export default class RNPickerSelect extends PureComponent {
     static propTypes = {
@@ -309,7 +320,7 @@ export default class RNPickerSelect extends PureComponent {
                 testID="input_accessory_view"
             >
                 <View style={[defaultStyles.chevronContainer, style.chevronContainer]}>
-                    <TouchableOpacity
+                    <CustomBottomSheetButton
                         activeOpacity={onUpArrow ? 0.5 : 1}
                         onPress={onUpArrow ? this.onUpArrow : null}
                     >
@@ -322,8 +333,8 @@ export default class RNPickerSelect extends PureComponent {
                                 onUpArrow ? [defaultStyles.chevronActive, style.chevronActive] : {},
                             ]}
                         />
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                    </CustomBottomSheetButton>
+                    <CustomBottomSheetButton
                         activeOpacity={onDownArrow ? 0.5 : 1}
                         onPress={onDownArrow ? this.onDownArrow : null}
                     >
@@ -338,7 +349,7 @@ export default class RNPickerSelect extends PureComponent {
                                     : {},
                             ]}
                         />
-                    </TouchableOpacity>
+                    </CustomBottomSheetButton>
                 </View>
                 <TouchableWithoutFeedback
                     onPress={() => {
